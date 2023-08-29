@@ -1,6 +1,6 @@
 {
-	"name": "obsidian-textgenerator-plugin",
-	"version": "0.3.20",
+	"name": "mapper",
+	"version": "0.0.1",
 	"description": "Text generator is a handy plugin that helps you generate text content using GPT-3 (OpenAI).",
 	"main": "main.js",
 	"scripts": {
@@ -16,8 +16,6 @@
 	"devDependencies": {
 		"@types/debug": "^4.1.7",
 		"@types/node": "^16.11.6",
-		"@types/react": "^18.0.24",
-		"@types/react-dom": "^18.0.8",
 		"@typescript-eslint/eslint-plugin": "^5.2.0",
 		"@typescript-eslint/parser": "^5.2.0",
 		"builtin-modules": "^3.2.0",
@@ -51,8 +49,6 @@
 		"postcss-cli": "^10.1.0",
 		"postcss-import": "^15.1.0",
 		"pretty-error": "^4.0.0",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
 		"request": "^2.88.2",
 		"safe-await": "^2.0.0",
 		"sse": "github:mpetazzoni/sse.js",
