@@ -2,7 +2,7 @@ import { App, Modal } from "obsidian";
 import TextGeneratorPlugin from "src/main";
 import * as React from "react";
 import { PackageManagerView } from "./package-manager-view";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 
 export class PackageManagerUI extends Modal {
 	result: string;
@@ -23,11 +23,12 @@ export class PackageManagerUI extends Modal {
 
 	async onOpen() {
 		this.containerEl.createEl("div", { cls: "PackageManager" });
-		this.root = createRoot(this.containerEl.children[1]);
-		this.root.render(
+		const renderTarget = this.containerEl.children[1];
+		ReactDOM.render(
 			<React.StrictMode>
 				<PackageManagerView parent={this} />,
-			</React.StrictMode>
+			</React.StrictMode>,
+			renderTarget
 		);
 	}
 

@@ -6,7 +6,7 @@ import {
 import { App, Modal } from "obsidian";
 import TextGeneratorPlugin from "../main";
 import * as React from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 
 const ContentExtractorComponent = ({ p, app, plugin }) => {
 	const [urlResults, setUrlResults] = useState([]);
@@ -152,15 +152,16 @@ export class TextExtractorTool extends Modal {
 
 	async onOpen() {
 		this.containerEl.createEl("div", { cls: "PackageManager" });
-		this.root = createRoot(this.containerEl.children[1]);
-		this.root.render(
+		const renderTarget = this.containerEl.children[1];
+		ReactDOM.render(
 			<React.StrictMode>
 				<ContentExtractorComponent
 					p={this}
 					app={this.app}
 					plugin={this.plugin}
 				/>
-			</React.StrictMode>
+			</React.StrictMode>,
+			renderTarget
 		);
 	}
 
