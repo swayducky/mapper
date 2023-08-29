@@ -529,7 +529,6 @@ export default class TextGeneratorPlugin extends Plugin {
 				id: "generate-text-with-metadata",
 				name: "Generate Text (use Metadata))!",
 				icon: "GENERATE_META_ICON",
-				hotkeys: [{ modifiers: ["Mod", "Alt"], key: "j" }],
 				editorCallback: async (editor: Editor) => {
 					try {
 						await this.textGenerator.generateInEditor(
@@ -680,7 +679,7 @@ export default class TextGeneratorPlugin extends Plugin {
 				id: "show-modal-From-template",
 				name: "Show modal From Template",
 				icon: "layout",
-				//hotkeys: [{ modifiers: ["Alt"], key: "4"}],
+				hotkeys: [{ modifiers: ["Mod", "Alt"], key: "j" }],
 				editorCallback: async (editor: Editor) => {
 					try {
 						new ExampleModal(

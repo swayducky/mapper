@@ -56,6 +56,14 @@ export const TemplateModalView = ({
 							className="w-full h-24 resize-none border border-gray-300 rounded mt-1 p-2 focus:outline-none focus:border-blue-500"
 							onChange={handleChange(index)}
 							value={formValues[index]}
+							onKeyDown={(event) => {
+								if (
+									event.key === "Enter" &&
+									(event.ctrlKey || event.metaKey)
+								) {
+									handleSubmit(event);
+								}
+							}}
 						/>
 					</div>
 				</div>
