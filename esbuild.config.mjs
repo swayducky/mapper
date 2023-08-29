@@ -97,6 +97,14 @@ esbuild.build({
 				// after the main.js is built, run the postcss command
 				console.log('build:css')
 				exec('postcss ./src/css/styles.css -o styles.css')
+				exec('./publish_local.sh', (publishError, publishStdout, publishStderr) => {
+					if (publishError) {
+						console.error(`publish_local.sh exec error: ${publishError}`);
+						return;
+					}
+					console.log(`stdout: ${publishStdout}`);
+					console.log(`stderr: ${publishStderr}`);
+				});
 			}
 		}
 	},

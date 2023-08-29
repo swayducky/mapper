@@ -2,6 +2,7 @@ import { App, Notice, FuzzySuggestModal, FuzzyMatch } from "obsidian";
 import TextGeneratorPlugin from "src/main";
 import { PromptTemplate } from "src/types";
 import debug from "debug";
+import { getTitleFromPath } from "src/utils";
 const logger = debug("textgenerator:model");
 export class ExampleModal extends FuzzySuggestModal<PromptTemplate> {
 	plugin: TextGeneratorPlugin;
@@ -36,6 +37,16 @@ export class ExampleModal extends FuzzySuggestModal<PromptTemplate> {
 			path: s,
 			...this.getMetadata(s),
 		}));
+		// SWAY: sort by .id
+		templates.sort((a: { id: number; }, b: { id: number; }) => {
+			if (a.id < b.id) {
+				return -1;
+			}
+			if (a.id > b.id) {
+				return 1;
+			}
+			return 0;
+		});
 		logger("getItems templates end", templates);
 		return templates;
 	}
@@ -96,13 +107,13 @@ export class ExampleModal extends FuzzySuggestModal<PromptTemplate> {
 	// Renders each suggestion item.
 	renderSuggestion(template: FuzzyMatch<PromptTemplate>, el: HTMLElement) {
 		logger("renderSuggestion", template);
-		el.createEl("div", { text: template.item.name });
-		el.createEl("small", {
-			text: template.item.description?.substring(0, 150),
-			cls: "desc",
-		});
-		el.createEl("div", {});
-		el.createEl("small", { text: template.item.path, cls: "path" });
+		el.createEl("div", { text: getTitleFromPath(template.item.path) }); // template.item.name
+		// el.createEl("small", {
+		// 	text: template.item.description?.substring(0, 150),
+		// 	cls: "desc",
+		// });
+		// el.createEl("div", {});
+		// el.createEl("small", { text: template.item.path, cls: "path" });
 		logger("renderSuggestion end", template);
 	}
 

@@ -129,3 +129,15 @@ export function transformStringsToChatFormat(arr: string[]) {
 export function escapeRegExp(text: string) {
 	return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
+
+
+export function getTitleFromPath(path: string) {
+	// Split by forward slash to get the filename
+	const parts = path.split("/");
+	const filename = parts[parts.length - 1];
+
+	// Split by period to remove the file extension
+	const title = filename.split(".")[0];
+
+	return title;
+}

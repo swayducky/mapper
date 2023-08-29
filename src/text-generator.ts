@@ -1,11 +1,11 @@
 import { TemplateModalUI } from "./ui/template-modal-ui";
-import { App, Notice, Editor, RequestUrlParam } from "obsidian";
+import { App, Notice, Editor, RequestUrlParam, EditorPosition } from "obsidian";
 import { TextGeneratorSettings } from "./types";
 import TextGeneratorPlugin from "./main";
 import ReqFormatter from "./api-request-formatter";
 import { SetPath } from "./ui/settings/set-path";
 import ContextManager from "./context-manager";
-import { makeid, createFileWithInput, openFile, removeYAML } from "./utils";
+import { makeid, createFileWithInput, openFile, removeYAML, getTitleFromPath } from "./utils";
 import safeAwait from "safe-await";
 import debug from "debug";
 const logger = debug("textgenerator:TextGenerator");
@@ -220,7 +220,7 @@ export default class TextGenerator {
 			}).open();
 		} else {
 			const mode = this.getMode(context);
-			this.insertGeneratedText(text, editor, cursor, mode);
+			this.insertGeneratedText(text, editor, cursor, mode, "YOO");
 		}
 		logger("generateFromTemplate end");
 	}
@@ -251,7 +251,7 @@ export default class TextGenerator {
 				const content = payload.choices[0].delta.content;
 				logger("generateStreamInEditor message", { payload, content });
 				const cursor = editor.getCursor();
-				this.insertGeneratedText(content, editor, cursor, "stream");
+				this.insertGeneratedText(content, editor, cursor, "stream", "YOOO2");
 
 				const newCursor = {
 					line: cursor.line,
@@ -298,7 +298,7 @@ export default class TextGenerator {
 			return Promise.reject(errorGeneration);
 		}
 		const mode = this.getMode(context);
-		this.insertGeneratedText(text, editor, cursor, mode);
+		this.insertGeneratedText(text, editor, cursor, mode, "YOOOOO3");
 		logger("generateInEditor end");
 	}
 	async;
@@ -391,7 +391,7 @@ export default class TextGenerator {
 			}).open();
 		} else {
 			const mode = this.getMode(context);
-			this.insertGeneratedText(contextAsString, editor, undefined, mode);
+			this.insertGeneratedText(contextAsString, editor, undefined, mode, "YO4");
 		}
 		logger("createToFile end");
 	}
@@ -548,10 +548,10 @@ export default class TextGenerator {
 		});
 	}
 
-	outputToBlockQuote(text: string) {
+	outputToBlockQuote(text: string, title: string) {
 		let lines = text
 			.split("\n")
-			.map((line) => line.trim())
+			// .map((line) => line.trim())
 			.filter((line) => line !== "" && line !== ">");
 		lines = lines
 			.map((line, index) => {
@@ -563,14 +563,15 @@ export default class TextGenerator {
 			})
 			.filter((line) => line !== "");
 
-		return "\n> [!ai]+ AI\n>\n" + lines.join("\n").trim() + "\n\n";
+		return "\n> [!ai]+ " + (title || 'AI') + "\n>\n" + lines.join("\n").trim() + "\n\n";
 	}
 
 	async insertGeneratedText(
 		completion: string,
 		editor: Editor,
-		cur = null,
-		mode = "insert"
+		cur: EditorPosition = null,
+		mode: string = "insert",
+		title: string = "",
 	) {
 		const logger = (message) => console.log(message);
 		logger("insertGeneratedText");
@@ -597,10 +598,12 @@ export default class TextGenerator {
 		}
 
 		if (this.plugin.settings.outputToBlockQuote && mode !== "stream") {
-			text = this.outputToBlockQuote(text);
+			text = this.outputToBlockQuote(text, title);
 		}
 
 		if (mode === "insert" || mode === "stream") {
+			// let final = text;
+			// if (!text.startsWith("\n")) final = "\n" + text;
 			editor.replaceRange(text, cursor);
 		} else if (mode === "replace") {
 			editor.replaceSelection(text);
@@ -707,7 +710,9 @@ export default class TextGenerator {
 					).open();
 				} else {
 					const mode = context?.options?.config?.mode || "insert";
-					this.insertGeneratedText(text, editor, cursor, mode);
+					const title = getTitleFromPath(templatePath);
+					// console.log("Inserting", this, title)
+					this.insertGeneratedText(text, editor, cursor, mode, title);
 				}
 			}
 		).open();
