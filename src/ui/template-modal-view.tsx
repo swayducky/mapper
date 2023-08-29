@@ -59,7 +59,7 @@ export const TemplateModalView = ({
 							onKeyDown={(event) => {
 								if (
 									event.key === "Enter" &&
-									(event.ctrlKey || event.metaKey)
+									(event.ctrlKey || event.metaKey || event.altKey)
 								) {
 									handleSubmit(event);
 								}
