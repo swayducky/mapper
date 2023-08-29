@@ -1,11 +1,11 @@
 {
-	"id": "obsidian-textgenerator-plugin",
-	"name": "Text Generator",
-	"version": "0.3.20",
+	"id": "mapper",
+	"name": "Mapper",
+	"version": "0.0.1",
 	"minAppVersion": "0.12.0",
 	"description": "Text generation using OpenAI",
-	"author": "Noureddine Haouari",
+	"author": "Sway Ducky",
 	"authorUrl": "https://obsidian.md",
 	"isDesktopOnly": false,
-	"fundingUrl": "https://www.buymeacoffee.com/haouarine"
+	"fundingUrl": ""
 }
