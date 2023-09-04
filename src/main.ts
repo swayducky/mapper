@@ -506,12 +506,21 @@ export default class TextGeneratorPlugin extends Plugin {
 			}
 		);
 		*/
+
+		const isMac = process.platform === "darwin";
+		// console.log("Platform:", process.platform, isMac);
+
 		this.commands = [
 			{
 				id: "generate-text",
 				name: "Generate Text!",
 				icon: "GENERATE_ICON",
-				hotkeys: [{ modifiers: ["Mod"], key: "j" }],
+				hotkeys: [
+					{
+						modifiers: isMac ? ["Mod", "Shift"] : ["Mod", "Shift"],
+						key: "j",
+					},
+				],
 				editorCallback: async (editor: Editor) => {
 					try {
 						await this.textGenerator.generateInEditor(
@@ -679,7 +688,12 @@ export default class TextGeneratorPlugin extends Plugin {
 				id: "show-modal-From-template",
 				name: "Show modal From Template",
 				icon: "layout",
-				hotkeys: [{ modifiers: ["Mod", "Alt"], key: "j" }],
+				hotkeys: [
+					{
+						modifiers: isMac ? ["Mod"] : ["Mod"],
+						key: "j",
+					},
+				],
 				editorCallback: async (editor: Editor) => {
 					try {
 						new ExampleModal(

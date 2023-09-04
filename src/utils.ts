@@ -130,7 +130,6 @@ export function escapeRegExp(text: string) {
 	return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
 
-
 export function getTitleFromPath(path: string) {
 	// Split by forward slash to get the filename
 	const parts = path.split("/");

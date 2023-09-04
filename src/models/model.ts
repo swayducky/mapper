@@ -38,11 +38,12 @@ export class ExampleModal extends FuzzySuggestModal<PromptTemplate> {
 			...this.getMetadata(s),
 		}));
 		// SWAY: sort by .id
-		templates.sort((a: { id: number; }, b: { id: number; }) => {
-			if (a.id < b.id) {
+		// console.log("Sorting:", templates)
+		templates.sort((a: { title: string }, b: { title: string }) => {
+			if (a.title < b.title) {
 				return -1;
 			}
-			if (a.id > b.id) {
+			if (a.title > b.title) {
 				return 1;
 			}
 			return 0;

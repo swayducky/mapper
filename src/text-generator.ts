@@ -5,7 +5,13 @@ import TextGeneratorPlugin from "./main";
 import ReqFormatter from "./api-request-formatter";
 import { SetPath } from "./ui/settings/set-path";
 import ContextManager from "./context-manager";
-import { makeid, createFileWithInput, openFile, removeYAML, getTitleFromPath } from "./utils";
+import {
+	makeid,
+	createFileWithInput,
+	openFile,
+	removeYAML,
+	getTitleFromPath,
+} from "./utils";
 import safeAwait from "safe-await";
 import debug from "debug";
 const logger = debug("textgenerator:TextGenerator");
@@ -251,7 +257,13 @@ export default class TextGenerator {
 				const content = payload.choices[0].delta.content;
 				logger("generateStreamInEditor message", { payload, content });
 				const cursor = editor.getCursor();
-				this.insertGeneratedText(content, editor, cursor, "stream", "YOOO2");
+				this.insertGeneratedText(
+					content,
+					editor,
+					cursor,
+					"stream",
+					"YOOO2"
+				);
 
 				const newCursor = {
 					line: cursor.line,
@@ -298,7 +310,7 @@ export default class TextGenerator {
 			return Promise.reject(errorGeneration);
 		}
 		const mode = this.getMode(context);
-		this.insertGeneratedText(text, editor, cursor, mode, "YOOOOO3");
+		this.insertGeneratedText(text, editor, cursor, mode, "AI");
 		logger("generateInEditor end");
 	}
 	async;
@@ -391,7 +403,13 @@ export default class TextGenerator {
 			}).open();
 		} else {
 			const mode = this.getMode(context);
-			this.insertGeneratedText(contextAsString, editor, undefined, mode, "YO4");
+			this.insertGeneratedText(
+				contextAsString,
+				editor,
+				undefined,
+				mode,
+				"YO4"
+			);
 		}
 		logger("createToFile end");
 	}
@@ -563,7 +581,13 @@ export default class TextGenerator {
 			})
 			.filter((line) => line !== "");
 
-		return "\n> [!ai]+ " + (title || 'AI') + "\n>\n" + lines.join("\n").trim() + "\n\n";
+		return (
+			"\n> [!ai]+ " +
+			(title || "AI") +
+			"\n>\n" +
+			lines.join("\n").trim() +
+			"\n\n"
+		);
 	}
 
 	async insertGeneratedText(
@@ -571,7 +595,7 @@ export default class TextGenerator {
 		editor: Editor,
 		cur: EditorPosition = null,
 		mode: string = "insert",
-		title: string = "",
+		title: string = ""
 	) {
 		const logger = (message) => console.log(message);
 		logger("insertGeneratedText");

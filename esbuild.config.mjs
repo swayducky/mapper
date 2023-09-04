@@ -31,18 +31,18 @@ const wasmPlugin = (config) => {
 				};
 			});
 			build.onLoad({
-					filter: /.*/,
-					namespace: "wasm-deferred"
-				},
+				filter: /.*/,
+				namespace: "wasm-deferred"
+			},
 				async (args) => ({
 					contents: await fs.promises.readFile(args.path),
 					loader: "file",
 				})
 			);
 			build.onLoad({
-					filter: /.*/,
-					namespace: "wasm-embed"
-				},
+				filter: /.*/,
+				namespace: "wasm-embed"
+			},
 				async (args) => ({
 					contents: await fs.promises.readFile(args.path),
 					loader: "binary",
@@ -53,6 +53,20 @@ const wasmPlugin = (config) => {
 };
 
 const prod = (process.argv[2] === 'production');
+
+function make() {
+	// after the main.js is built, run the postcss command
+	console.log('==== Make()')
+	exec('postcss ./src/css/styles.css -o styles.css')
+	exec('./make.sh', (publishError, publishStdout, publishStderr) => {
+		if (publishError) {
+			console.error(`./make.sh exec error: ${publishError}`);
+			return;
+		}
+		console.log(`stdout: ${publishStdout}`);
+		console.log(`stderr: ${publishStderr}`);
+	});
+}
 
 esbuild.build({
 	banner: {
@@ -94,17 +108,7 @@ esbuild.build({
 		onRebuild(error, result) {
 			if (error) console.error('watch build failed:', error)
 			else {
-				// after the main.js is built, run the postcss command
-				console.log('build:css')
-				exec('postcss ./src/css/styles.css -o styles.css')
-				exec('./publish_local.sh', (publishError, publishStdout, publishStderr) => {
-					if (publishError) {
-						console.error(`publish_local.sh exec error: ${publishError}`);
-						return;
-					}
-					console.log(`stdout: ${publishStdout}`);
-					console.log(`stderr: ${publishStderr}`);
-				});
+				make()
 			}
 		}
 	},
