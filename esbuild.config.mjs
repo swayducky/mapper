@@ -117,4 +117,4 @@ esbuild.build({
 	sourcemap: prod ? false : 'inline',
 	treeShaking: true,
 	outfile: 'main.js',
-}).catch(() => process.exit(1));
+}).then(make).catch(() => process.exit(1));
